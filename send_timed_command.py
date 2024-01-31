@@ -18,7 +18,7 @@ def main():
     samples = np.exp(1j * np.pi * np.arange(4000))
 
     # send the signal
-    usrp.send_timed_command(samples, uhd.types.TimeSpec(2))
+    usrp.send_waveform(samples, uhd.types.TimeSpec(2))
 
 
 if __name__ == "__main__":
