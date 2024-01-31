@@ -3,7 +3,7 @@ import numpy as np
 
 def main():
     # create a USRP device
-    usrp = uhd.usrp.MultiUSRP(uhd.usrp.MultiUSRP.make("addr=10.28.128.3"))
+    usrp = uhd.usrp.MultiUSRP("addr=10.28.128.3")
 
     # set USRP clock source
     usrp.set_clock_source("internal")
@@ -17,11 +17,8 @@ def main():
     # create a simple sine wave signal
     samples = np.exp(1j * np.pi * np.arange(4000))
 
-    # set usrp command time
-    usrp.set_command_time(uhd.types.TimeSpec(2))
-
     # send the signal
-    usrp.send(samples)
+    usrp.send_timed_command(samples, uhd.types.TimeSpec(2))
 
 
 if __name__ == "__main__":
