@@ -4,6 +4,9 @@ import uhd.types
 import numpy as np
 
 def receive_thread(usrp):
+
+    print("Starting rx thread...")
+
     while True:
         # Receive samples from the USRP
         samples = usrp.receive_samples(1000)
@@ -11,19 +14,13 @@ def receive_thread(usrp):
         # Process the received samples
         # ...
 
-def main():
-    # create a USRP device
-    usrp = uhd.usrp.MultiUSRP("addr=10.28.128.3")
+def main(usrp):
 
     # set USRP clock source
     usrp.set_clock_source("internal")
 
     # set usrp realtime clock (to 0 for now)
     usrp.set_time_now(uhd.types.TimeSpec(0.0))
-
-    # Start the receive thread
-    receive_thread = threading.Thread(target=receive_thread, args=(usrp,))
-    receive_thread.start()
 
     # create a simple sine wave signal
     samples = np.exp(1j * np.pi * np.arange(4000))
@@ -37,8 +34,18 @@ def main():
     tx_time = uhd.types.TimeSpec(2)
 
     # send the signal
+    print("Sending samples...")
     usrp.send_waveform(samples, tx_duration, center_freq, sample_rate, channels, tx_gain, tx_time)
+    print("   done")
 
 
 if __name__ == "__main__":
-    main()
+
+    # create a USRP device
+    usrp = uhd.usrp.MultiUSRP("addr=10.28.128.3")
+
+    # Start the receive thread
+    receive_thread = threading.Thread(target=receive_thread, args=(usrp,))
+    receive_thread.start()
+
+    main(usrp)
