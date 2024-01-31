@@ -1,6 +1,7 @@
 import threading
 import uhd
 import uhd.types
+import uhd.usrp
 import numpy as np
 
 def receive_thread(usrp):
@@ -9,7 +10,7 @@ def receive_thread(usrp):
 
     while True:
         # Receive samples from the USRP
-        samples = usrp.receive_samples(1000)
+        samples = usrp.recv_num_samps(1000)
 
         # Process the received samples
         # ...
