@@ -10,7 +10,7 @@ def receive_thread(usrp):
 
     while True:
         # Receive samples from the USRP
-        samples = usrp.recv_num_samps(1000)
+        samples = usrp.recv_num_samps(1000, )
 
         # Process the received samples
         # ...
